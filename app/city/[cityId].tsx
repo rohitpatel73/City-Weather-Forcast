@@ -23,6 +23,7 @@ export default function CityWeatherPage() {
         );
         setWeather(response.data);
       } catch (err) {
+        console.error('Failed to fetch weather data:', err);
         setError('Weather information not found for this city.');
       }
     };
