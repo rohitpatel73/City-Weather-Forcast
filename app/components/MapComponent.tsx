@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 
 interface Props {
@@ -11,17 +13,31 @@ const MapComponent: React.FC<Props> = ({ lat, lon }) => {
   useEffect(() => {
     if (!mapRef.current) return;
 
-    const L = require('leaflet');
-    const map = L.map(mapRef.current).setView([lat, lon], 10);
+    let mapInstance: any;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map);
+    const initializeMap = async () => {
+      const L = await import('leaflet');
 
-    L.marker([lat, lon]).addTo(map);
+      // Prevent multiple map initializations
+      if (mapRef.current && !mapRef.current.dataset.mapInitialized) {
+        mapInstance = L.map(mapRef.current).setView([lat, lon], 10);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(mapInstance);
+
+        L.marker([lat, lon]).addTo(mapInstance);
+
+        mapRef.current.dataset.mapInitialized = 'true';
+      }
+    };
+
+    initializeMap();
 
     return () => {
-      map.remove();
+      if (mapInstance) {
+        mapInstance.remove();
+      }
     };
   }, [lat, lon]);
 

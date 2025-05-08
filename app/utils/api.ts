@@ -41,12 +41,22 @@ export const getCityData = async (): Promise<CityData[]> => {
       params: CITY_DATA_PARAMS
     });
 
-    return response.data.records.map((record: any) => ({
-      name: record.fields.name,
-      country: record.fields.cou_name_en,
-      timezone: record.fields.timezone,
-      geonameid: record.recordid
-    }));
+    type CityRecord = {
+  fields: {
+    name: string;
+    cou_name_en: string;
+    timezone: string;
+  };
+  recordid: string;
+};
+
+return response.data.records.map((record: CityRecord) => ({
+  name: record.fields.name,
+  country: record.fields.cou_name_en,
+  timezone: record.fields.timezone,
+  geonameid: record.recordid,
+}));
+
   } catch (error) {
     console.error('Error fetching city data:', error);
     throw new Error('Failed to fetch city data');

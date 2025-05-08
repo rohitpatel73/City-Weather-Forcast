@@ -2,6 +2,7 @@
 "use client"; 
 
 import CityTable from './components/CityTables';
+import 'leaflet/dist/leaflet.css';
 
 export default function Home() {
   return (
