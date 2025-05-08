@@ -1,10 +1,9 @@
-// /pages/city/[cityId].tsx
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import WeatherDetails from '../../components/WeatherDetails';
-import MapComponent from '../../components/MapComponent';
-import { WeatherData } from '../../utils/types';
+import WeatherDetails from '../../app/components/WeatherDetails';
+import MapComponent from '../../app/components/MapComponent';
+import { WeatherData } from '../../app/utils/types';
 
 const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 
