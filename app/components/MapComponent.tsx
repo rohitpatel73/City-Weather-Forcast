@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type * as L from 'leaflet'; 
 
 interface Props {
   lat: number;
@@ -13,12 +14,11 @@ const MapComponent: React.FC<Props> = ({ lat, lon }) => {
   useEffect(() => {
     if (!mapRef.current) return;
 
-    let mapInstance: any;
+    let mapInstance: L.Map | null = null;
 
     const initializeMap = async () => {
-      const L = await import('leaflet');
+      const L = await import('leaflet'); 
 
-      // Prevent multiple map initializations
       if (mapRef.current && !mapRef.current.dataset.mapInitialized) {
         mapInstance = L.map(mapRef.current).setView([lat, lon], 10);
 
