@@ -38,7 +38,7 @@ const MapComponent: React.FC<Props> = ({ lat, lon }) => {
     };
   }, [lat, lon]);
 
-  return <div ref={mapRef} className="h-64 w-full rounded shadow-md" />;
+  return <div ref={mapRef} className="h-150 w-full rounded shadow-md" />;
 };
 
 export default MapComponent;

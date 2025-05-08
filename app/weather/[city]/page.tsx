@@ -1,5 +1,5 @@
-import { fetchWeatherByCityName } from '@/app/utils/api';
-import MapComponent from '@/app/components/MapComponent';
+import { fetchWeatherByCityName } from "@/app/utils/api";
+import MapComponent from "@/app/components/MapComponent";
 
 interface PageProps {
   params: Promise<{ city: string }>;
@@ -13,6 +13,8 @@ const WeatherPage = async ({ params }: PageProps) => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-2">Weather in {city}</h1>
       <p className="mb-4">Temperature: {weather.main.temp}°C</p>
+      <p>Wind Speed: {weather.wind.speed} m/s</p>
+      <p>Pressure: {weather.main.pressure} hPa</p>
       <MapComponent lat={weather.coord.lat} lon={weather.coord.lon} />
     </div>
   );
