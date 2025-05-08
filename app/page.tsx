@@ -1,4 +1,3 @@
-// Home.tsx
 "use client"; 
 
 import CityTable from './components/CityTables';

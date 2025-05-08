@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import type * as L from 'leaflet'; 
+import 'leaflet/dist/leaflet.css';
 
 interface Props {
   lat: number;
@@ -10,33 +10,30 @@ interface Props {
 
 const MapComponent: React.FC<Props> = ({ lat, lon }) => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<import('leaflet').Map | null>(null); // ✅ No `any`
 
   useEffect(() => {
-    if (!mapRef.current) return;
-
-    let mapInstance: L.Map | null = null;
-
     const initializeMap = async () => {
-      const L = await import('leaflet'); 
+      if (!mapRef.current || mapInstanceRef.current) return;
 
-      if (mapRef.current && !mapRef.current.dataset.mapInitialized) {
-        mapInstance = L.map(mapRef.current).setView([lat, lon], 10);
+      const L = await import('leaflet');
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors',
-        }).addTo(mapInstance);
+      const map = L.map(mapRef.current).setView([lat, lon], 10);
+      mapInstanceRef.current = map;
 
-        L.marker([lat, lon]).addTo(mapInstance);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(map);
 
-        mapRef.current.dataset.mapInitialized = 'true';
-      }
+      L.marker([lat, lon]).addTo(map);
     };
 
     initializeMap();
 
     return () => {
-      if (mapInstance) {
-        mapInstance.remove();
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
       }
     };
   }, [lat, lon]);
